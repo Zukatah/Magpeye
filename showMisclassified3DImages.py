@@ -5,7 +5,7 @@ import csv
 import pyperclip
 
 
-with open('MislabeledFiles.csv', 'r') as csvfile:
+with open('NotesAndTools/MislabeledFiles.csv', 'r') as csvfile:
     notesReader = csv.reader(csvfile, delimiter=',')
     
     for (i, row) in enumerate(notesReader):

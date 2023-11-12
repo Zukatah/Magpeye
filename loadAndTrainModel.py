@@ -53,7 +53,7 @@ print(classification_report(y_true, y_pred_classes))
 
 '''
 print("Saving information about files (training samples) that were classified incorrectly...")
-with open('MislabeledFiles.csv', 'w', newline='') as f:
+with open('NotesAndTools/MislabeledFiles.csv', 'w', newline='') as f:
     writer = csv.writer(f)
     for i in range(len(file_pathes)):
         if y_true[i] != y_pred_classes[i]:
