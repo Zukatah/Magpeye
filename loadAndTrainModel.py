@@ -22,7 +22,7 @@ model = load_model(modelPath)
 print("Compiling model...")
 model.compile(loss=categorical_crossentropy, optimizer=Adam(learning_rate=0.001), metrics=['acc']) # usually lr between 0.001 and 0.000005
 model.summary()
-model_checkpoint_callback = ModelCheckpoint('./tmp/checkpoint', save_best_only=True, save_weights_only=False, monitor='val_loss', mode='min')
+model_checkpoint_callback = ModelCheckpoint('./Models/tmp/checkpoint', save_best_only=True, save_weights_only=False, monitor='val_loss', mode='min')
 
 print("Fitting model...")
 history = model.fit(train_ds, epochs=10, validation_data=val_ds, callbacks=[model_checkpoint_callback])
