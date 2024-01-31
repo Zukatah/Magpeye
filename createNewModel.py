@@ -1,12 +1,13 @@
 import numpy as np
 from keras.models import Model
 from keras.layers import Input, Dense, Conv3D, MaxPooling3D, BatchNormalizationV2, Flatten, Dropout, ZeroPadding3D
+from globalConstants import TRAINING_EXAMPLE_DEPTH
 
 modelPath = "Models/model_c3d233133_mp3d122122_c3d233111_mp3d122122_c3d233111_mp3d122122_c3d233111_mp3d122122_den24_do40"
 
 
 print("Creating model...")
-input_layer = Input(shape=(5,480,270,1), name='input_layer')
+input_layer = Input(shape=(TRAINING_EXAMPLE_DEPTH,480,270,1), name='input_layer')
 
 ZeroPadding3D_1a = ZeroPadding3D(padding=(0,1,1))(input_layer)
 Conv3D_1a = Conv3D(32, (2,3,3), strides=(1,3,3), activation="relu", padding="valid")(ZeroPadding3D_1a)

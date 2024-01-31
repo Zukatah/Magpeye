@@ -2,6 +2,8 @@ import cv2 as cv
 import csv
 import numpy as np
 import os
+from globalConstants import TRAINING_EXAMPLE_DEPTH, TRAINING_EXAMPLE_C1C2C3_GENERATION_STEP, TRAINING_EXAMPLE_C1C2C3_GENERATION_START_INDEX, TRAINING_EXAMPLE_C0_GENERATION_FRAME_INTERVAL
+from skimage.metrics import structural_similarity
 
 
 videos_path = "Videos_Preprocessed/"
@@ -10,10 +12,12 @@ video_index = 0
 
 for file_index, file in enumerate(os.scandir(videos_path)):
     if file.name.endswith(".mp4"):
-        suffixIndex = file.name.find("_Frames_RD")
-        if suffixIndex == -1:
-            raise ValueError("Suffix '_Frames_RD' has to occur in each video file name. This is not true for video " + file.name)
-        videoname = file.name[0:suffixIndex]
+        #suffixIndex = file.name.find("_Frames")
+        #if suffixIndex == -1:
+        #    raise ValueError("Suffix '_Frames_RD' has to occur in each video file name. This is not true for video " + file.name)
+        #videoname = file.name[0:suffixIndex]
+
+        videoname, _ = os.path.splitext(file.name)
 
 
         print("Load labels for all frames of video", file_index, ":", videoname)
@@ -28,8 +32,8 @@ for file_index, file in enumerate(os.scandir(videos_path)):
         frameIndex = 0
         frameIndex_lastCollisionIndex = -1
         waitingStepCounter = 1
-        latest9Frames = []
-        latest9Frames_mv = [] # mv = mirrored vertically
+        latestFrames = []
+        latestFrames_mv = [] # mv = mirrored vertically
         while True:
             status, frame = capture.read()
             
@@ -40,38 +44,39 @@ for file_index, file in enumerate(os.scandir(videos_path)):
             grayFrameResized = cv.resize(grayFrame, (270, 480), interpolation = cv.INTER_LANCZOS4)
             grayFrameResized_mv = cv.flip(grayFrameResized, 1)
 
-            if frameIndex >= 9:
-                latest9Frames.pop(0)
-                latest9Frames_mv.pop(0)
+            if frameIndex >= 2 * TRAINING_EXAMPLE_DEPTH - 1:
+                latestFrames.pop(0)
+                latestFrames_mv.pop(0)
 
-            latest9Frames.append(grayFrameResized)
-            latest9Frames_mv.append(grayFrameResized_mv)
+            latestFrames.append(grayFrameResized)
+            latestFrames_mv.append(grayFrameResized_mv)
 
             # Create image series for non-collisions
             # This structure always makes sure that non-collision examples don't contain the frame of a collision, the previous frame or the next frame
             if labels[frameIndex] != 0:
                 frameIndex_lastCollisionIndex = frameIndex
-            if frameIndex - frameIndex_lastCollisionIndex >= 7:
-                if waitingStepCounter % 60 == 0:
-                    collisionPicture = np.stack((latest9Frames[3], latest9Frames[4], latest9Frames[5], latest9Frames[6], latest9Frames[7]), axis=0) # not np.concatenate((l9F[3],l9F[4],l9F[5],l9F[6],l9F[7]), axis=1)
-                    np.save(pictures_path + "0/" + videoname + "_" + str(frameIndex-3), collisionPicture)
-                    collisionPicture_mv = np.stack((latest9Frames_mv[3], latest9Frames_mv[4], latest9Frames_mv[5], latest9Frames_mv[6], latest9Frames_mv[7]), axis=0)
-                    np.save(pictures_path + "0/" + videoname + "_mv_" + str(frameIndex-3), collisionPicture_mv)
+            if frameIndex - frameIndex_lastCollisionIndex >= TRAINING_EXAMPLE_DEPTH + 2: # we don't want training examples containing secondary shuttle collissions, so we should wait for 1.5s
+                if waitingStepCounter % TRAINING_EXAMPLE_C0_GENERATION_FRAME_INTERVAL == 0:
+                    # TODO: INCLUDE STRUCTURAL SIMILARITY INDEX!!!
+                    collisionPicture = np.stack((latestFrames[TRAINING_EXAMPLE_DEPTH-2+j] for j in range(TRAINING_EXAMPLE_DEPTH)), axis=0) # not np.concatenate((l9F[3],l9F[4],l9F[5],l9F[6],l9F[7]), axis=1)
+                    np.save(pictures_path + "0/" + videoname + "_" + str(frameIndex-(TRAINING_EXAMPLE_DEPTH-2)), collisionPicture)
+                    collisionPicture_mv = np.stack((latestFrames_mv[TRAINING_EXAMPLE_DEPTH-2+j] for j in range(TRAINING_EXAMPLE_DEPTH)), axis=0)
+                    np.save(pictures_path + "0/" + videoname + "_mv_" + str(frameIndex-(TRAINING_EXAMPLE_DEPTH-2)), collisionPicture_mv)
                 waitingStepCounter += 1
 
             # Create image series for collisions
-            if frameIndex >= 8:
-                curLabel = int(labels[frameIndex-4])
+            if frameIndex >= TRAINING_EXAMPLE_DEPTH * 2 - 2:
+                curLabel = int(labels[frameIndex-(TRAINING_EXAMPLE_DEPTH-1)])
                 if curLabel != 0:
-                    for i in range(5):
-                        collisionPicture = np.stack((latest9Frames[i], latest9Frames[i+1], latest9Frames[i+2], latest9Frames[i+3], latest9Frames[i+4]), axis=0)
-                        np.save(pictures_path + str(curLabel) + "/" + videoname + "_" + str(frameIndex-4) + "_" + str(i), collisionPicture)
-                        collisionPicture_mv = np.stack((latest9Frames_mv[i], latest9Frames_mv[i+1], latest9Frames_mv[i+2], latest9Frames_mv[i+3], latest9Frames_mv[i+4]), axis=0)
-                        np.save(pictures_path + str(4-curLabel) + "/" + videoname + "_mv_" + str(frameIndex-4) + "_" + str(i), collisionPicture_mv)
+                    for i in range(TRAINING_EXAMPLE_C1C2C3_GENERATION_START_INDEX, TRAINING_EXAMPLE_DEPTH, TRAINING_EXAMPLE_C1C2C3_GENERATION_STEP):
+                        collisionPicture = np.stack((latestFrames[i+j] for j in range(TRAINING_EXAMPLE_DEPTH)), axis=0)
+                        np.save(pictures_path + str(curLabel) + "/" + videoname + "_" + str(frameIndex-(TRAINING_EXAMPLE_DEPTH-1)) + "_" + str(i), collisionPicture)
+                        collisionPicture_mv = np.stack((latestFrames_mv[i+j] for j in range(TRAINING_EXAMPLE_DEPTH)), axis=0)
+                        np.save(pictures_path + str(4-curLabel) + "/" + videoname + "_mv_" + str(frameIndex-(TRAINING_EXAMPLE_DEPTH-1)) + "_" + str(i), collisionPicture_mv)
 
             # Keep track of frame index (and print to see progress)
-            if frameIndex % 1000 == 0:
-                print("videoname", videoname, "frameIndex", frameIndex)
+            if frameIndex % 3600 == 0:
+                print("Videoname:", videoname, " Minute:", (frameIndex//3600))
             frameIndex += 1
 
         capture.release()
