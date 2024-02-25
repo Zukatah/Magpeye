@@ -27,13 +27,13 @@ for i, datei in enumerate(dateien):
     basisname, erweiterung = os.path.splitext(datei)
     teile = basisname.split('_')
 
-    if len(teile) == 4 and teile[3] == "1":
+    if len(teile) == 4 and teile[3] == "0":
         train = random.random() < 0.9
         neuer_basisname = '_'.join(teile[0:3])
         neuer_basisname_mv = '_'.join(teile[0:2]) + "_mv_" + teile[2]
-        for i in range(10):
-            oneOfTenCopies = neuer_basisname + "_" + str(i*3+1) + erweiterung
-            oneOfTenCopiesMv = neuer_basisname_mv + "_" + str(i*3+1) + erweiterung
+        for i in range(5): # depending on number of training examples per collision (10 for depth 30 of 3Dsamples)
+            oneOfTenCopies = neuer_basisname + "_" + str(i) + erweiterung # needs to be adjusted accordingly (i*3+1 for depth 30 of 3Dsamples)
+            oneOfTenCopiesMv = neuer_basisname_mv + "_" + str(i) + erweiterung # needs to be adjusted accordingly (i*3+1 for depth 30 of 3Dsamples)
             #print(i, os.path.join(folderpath_source, oneOfTenCopies), os.path.join((folderpath_dest_train if train else folderpath_dest_val), oneOfTenCopies))
             #print(i, os.path.join(folderpath_source_mv, oneOfTenCopiesMv), os.path.join((folderpath_dest_mv_train if train else folderpath_dest_mv_val), oneOfTenCopiesMv))
             os.replace(os.path.join(folderpath_source, oneOfTenCopies), os.path.join((folderpath_dest_train if train else folderpath_dest_val), oneOfTenCopies))
@@ -58,15 +58,13 @@ for i, datei in enumerate(dateien):
     basisname, erweiterung = os.path.splitext(datei)
     teile = basisname.split('_')
 
-    if len(teile) == 4 and teile[3] == "1":
+    if len(teile) == 4 and teile[3] == "0":
         train = random.random() < 0.9
         neuer_basisname = '_'.join(teile[0:3])
         neuer_basisname_mv = '_'.join(teile[0:2]) + "_mv_" + teile[2]
-        for i in range(10):
-            oneOfTenCopies = neuer_basisname + "_" + str(i*3+1) + erweiterung
-            oneOfTenCopiesMv = neuer_basisname_mv + "_" + str(i*3+1) + erweiterung
-            #print(i, os.path.join(folderpath_source, oneOfTenCopies), os.path.join((folderpath_dest_train if train else folderpath_dest_val), oneOfTenCopies))
-            #print(i, os.path.join(folderpath_source_mv, oneOfTenCopiesMv), os.path.join((folderpath_dest_mv_train if train else folderpath_dest_mv_val), oneOfTenCopiesMv))
+        for i in range(5): # depending on number of training examples per collision (10 for depth 30 of 3Dsamples)
+            oneOfTenCopies = neuer_basisname + "_" + str(i) + erweiterung # needs to be adjusted accordingly (i*3+1 for depth 30 of 3Dsamples)
+            oneOfTenCopiesMv = neuer_basisname_mv + "_" + str(i) + erweiterung # needs to be adjusted accordingly (i*3+1 for depth 30 of 3Dsamples)
             os.replace(os.path.join(folderpath_source, oneOfTenCopies), os.path.join((folderpath_dest_train if train else folderpath_dest_val), oneOfTenCopies))
             os.replace(os.path.join(folderpath_source, oneOfTenCopiesMv), os.path.join((folderpath_dest_train if train else folderpath_dest_val), oneOfTenCopiesMv))
     
@@ -75,7 +73,7 @@ for i, datei in enumerate(dateien):
 '''
 
 
-folderpath_source = "Pictures3D_TempStorage_Class0/"
+folderpath_source = "Pictures3D_Input/0/"
 folderpath_dest_train = "Pictures3D/train/0/"
 folderpath_dest_val = "Pictures3D/val/0/"
 

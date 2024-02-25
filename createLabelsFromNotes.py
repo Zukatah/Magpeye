@@ -14,12 +14,12 @@ for file_index, file in enumerate(os.scandir(videos_path)):
 
         labels = [0 for _ in range(length)]
 
-        with open(videos_path + videoname + '_Notes.csv') as csvfile: # _Notes_ND.csv suffix for notes without secondary collisions
+        with open(videos_path + videoname + '_Notes_ND.csv') as csvfile: # _Notes_ND.csv suffix for notes without secondary collisions
             notesReader = csv.reader(csvfile, delimiter=',', quoting=csv.QUOTE_NONNUMERIC)
             for (i, row) in enumerate(notesReader):
                 for collision in row:
                     labels[int(collision)] = i+1
 
-        with open(videos_path + videoname + '_Labels.csv', 'w') as f:
+        with open(videos_path + videoname + '_Labels_ND.csv', 'w') as f:
             writer = csv.writer(f)
             writer.writerow(labels)
