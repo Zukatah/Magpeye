@@ -1,15 +1,3 @@
-'''
-import splitfolders
-
-# Split with a ratio.
-# To only split into training and validation set, set a tuple to `ratio`, i.e, `(.8, .2)`.
-splitfolders.ratio("Pictures3D_Input", output="Pictures3D",
-    seed=1337, ratio=(.9, .1), group_prefix=None, move=True) # default values
-'''
-
-
-
-
 import os
 
 # Remove specific prefixes from all files in a folder
@@ -28,7 +16,7 @@ def rename_files(folder_path):
             os.rename(old_filepath, new_filepath)
 
 # Geben Sie den Pfad zu Ihrem Ordner an
-folder_path = 'Pictures3D_NewlyCreated/train/3/'
+folder_path = 'Pictures3D/train/3/'
 
 # Rufen Sie die Funktion auf
 rename_files(folder_path)

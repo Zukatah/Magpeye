@@ -7,7 +7,7 @@ from skimage.metrics import structural_similarity
 
 
 videos_path = "Videos_Preprocessed/"
-pictures_path = "Pictures3D_NewlyCreated/train/"
+pictures_path = "Pictures3D_Input/"
 video_index = 0
 
 for file_index, file in enumerate(os.scandir(videos_path)):
