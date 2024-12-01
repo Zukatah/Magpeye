@@ -20,7 +20,7 @@ for i, trainingExample in enumerate(trainingExamples):
     basisname, fileExtension = os.path.splitext(trainingExample)
     teile = basisname.split('_')
 
-    if len(teile) == 4 and int(teile[3]) == TRAINING_EXAMPLE_C1C2C3_GENERATION_LIST[0] and teile[0] != "Magpeye-Android":
+    if len(teile) == 4 and int(teile[3]) == TRAINING_EXAMPLE_C1C2C3_GENERATION_LIST[0] and teile[0] != "Magpeye-Android" and teile[0] != "Magpeye-Android-tebc":
         train = random.random() < 0.9
         neuer_basisname = '_'.join(teile[0:3])
         neuer_basisname_mv = '_'.join(teile[0:2]) + "_mv_" + teile[2]
@@ -31,7 +31,7 @@ for i, trainingExample in enumerate(trainingExamples):
             #print(i, os.path.join(folderpath_source_mv, oneOfTenCopiesMv), os.path.join((folderpath_dest_mv_train if train else folderpath_dest_mv_val), oneOfTenCopiesMv))
             os.replace(os.path.join(folderpath_source, oneOfTenCopies), os.path.join((folderpath_dest_train if train else folderpath_dest_val), oneOfTenCopies))
             os.replace(os.path.join(folderpath_source_mv, oneOfTenCopiesMv), os.path.join((folderpath_dest_mv_train if train else folderpath_dest_mv_val), oneOfTenCopiesMv))
-    elif len(teile) == 3 and teile[0] == "Magpeye-Android":
+    elif len(teile) == 3 and (teile[0] == "Magpeye-Android" or teile[0] == "Magpeye-Android-tebc"):
         train = random.random() < 0.9
         neuer_basisname = '_'.join(teile[0:3])
         neuer_basisname_mv = '_'.join(teile[0:2]) + "_mv_" + str(trainExClassMv)
@@ -47,7 +47,6 @@ for i, trainingExample in enumerate(trainingExamples):
     #    break
 '''
 
-
 '''
 folderpath_source = "Pictures3D_Input/2/"
 folderpath_dest_train = "Pictures3D/train/2/"
@@ -59,7 +58,7 @@ for i, trainingExample in enumerate(trainingExamples):
     basisname, fileExtension = os.path.splitext(trainingExample)
     teile = basisname.split('_')
 
-    if len(teile) == 4 and int(teile[3]) == TRAINING_EXAMPLE_C1C2C3_GENERATION_LIST[0] and teile[0] != "Magpeye-Android":
+    if len(teile) == 4 and int(teile[3]) == TRAINING_EXAMPLE_C1C2C3_GENERATION_LIST[0] and teile[0] != "Magpeye-Android" and teile[0] != "Magpeye-Android-tebc":
         train = random.random() < 0.9
         neuer_basisname = '_'.join(teile[0:3])
         neuer_basisname_mv = '_'.join(teile[0:2]) + "_mv_" + teile[2]
@@ -68,7 +67,7 @@ for i, trainingExample in enumerate(trainingExamples):
             oneOfTenCopiesMv = neuer_basisname_mv + "_" + str(i) + fileExtension # needs to be adjusted accordingly (i*3+1 for depth 30 of 3Dsamples)
             os.replace(os.path.join(folderpath_source, oneOfTenCopies), os.path.join((folderpath_dest_train if train else folderpath_dest_val), oneOfTenCopies))
             os.replace(os.path.join(folderpath_source, oneOfTenCopiesMv), os.path.join((folderpath_dest_train if train else folderpath_dest_val), oneOfTenCopiesMv))
-    elif len(teile) == 3 and teile[0] == "Magpeye-Android":
+    elif len(teile) == 3 and (teile[0] == "Magpeye-Android" or teile[0] == "Magpeye-Android-tebc"):
         train = random.random() < 0.9
         neuer_basisname = '_'.join(teile[0:3])
         neuer_basisname_mv = '_'.join(teile[0:2]) + "_mv_" + teile[2]
@@ -93,7 +92,7 @@ for i, trainingExample in enumerate(trainingExamples):
     basisname, fileExtension = os.path.splitext(trainingExample)
     teile = basisname.split('_')
 
-    if len(teile) == 4 and teile[0] != "Magpeye-Android":
+    if len(teile) == 4 and teile[0] != "Magpeye-Android" and teile[0] != "Magpeye-Android-tebc":
         if int(teile[3]) >= 0:
             train = random.random() < 0.9
             neuer_basisname = '_'.join(teile[0:4])
@@ -113,7 +112,7 @@ for i, trainingExample in enumerate(trainingExamples):
                 oneOfTenCopiesMv = neuer_basisname_mv + "_" + str(i) + fileExtension # needs to be adjusted accordingly (i*3+1 for depth 30 of 3Dsamples)
                 os.replace(os.path.join(folderpath_source, oneOfTenCopies), os.path.join((folderpath_dest_train if train else folderpath_dest_val), oneOfTenCopies))
                 os.replace(os.path.join(folderpath_source, oneOfTenCopiesMv), os.path.join((folderpath_dest_train if train else folderpath_dest_val), oneOfTenCopiesMv))
-    elif len(teile) == 3 and teile[0] == "Magpeye-Android":
+    elif len(teile) == 3 and (teile[0] == "Magpeye-Android" or teile[0] == "Magpeye-Android-tebc"):
         train = random.random() < 0.9
         neuer_basisname = '_'.join(teile[0:3])
         neuer_basisname_mv = '_'.join(teile[0:2]) + "_mv_" + teile[2]

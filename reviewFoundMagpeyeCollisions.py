@@ -5,7 +5,9 @@ import shutil
 from tkinter import *
 from tkinter import messagebox
 from globalConstants import TRAINING_EXAMPLE_DEPTH
+from datetime import datetime
 
+buttonNames = ["No collision", "Left", "Touching Line", "Right"]
 
 class ImageLabeler:
     source_folder = "Pictures3D_Magpeye/"
@@ -15,7 +17,8 @@ class ImageLabeler:
     def __init__(self, root):
         self.root = root
         self.imagesAll = os.listdir(self.source_folder) # all images, which includes the large RGB versions
-        self.images = [image for image in self.imagesAll if image.startswith("Magpeye-Android_")] # only the sample images - doesn't include the large RGB versions
+        self.images = [image for image in self.imagesAll if image.startswith("Magpeye-Android_") or image.startswith("Magpeye-Android-tebc_")] # only the sample images - doesn't include the large RGB versions
+        self.images = sorted(self.images, key=lambda x: datetime.strptime(x.split('_')[1], "%Y-%m-%dT%H-%M-%S-%f"))
         if len(self.images) == 0:
             exit()
         self.current_image_index = 0
@@ -27,10 +30,10 @@ class ImageLabeler:
         self.load_image()
         self.buttons = []
         for i in range(4):
-            button = Button(self.button_frame, text=f"Button{i}", command=lambda idx=i: self.on_button_click(idx))
+            button = Button(self.button_frame, text=f"{buttonNames[i]}", command=lambda idx=i: self.on_button_click(idx))
             button.pack(side=LEFT, padx=5)
             self.buttons.append(button)
-        button = Button(self.button_frame, text=f"ButtonDiscard", command=lambda idx="Discard": self.on_button_click(idx))
+        button = Button(self.button_frame, text=f"Discard", command=lambda idx="Discard": self.on_button_click(idx))
         button.pack(side=LEFT, padx=5)
         self.buttons.append(button)
         
@@ -38,10 +41,10 @@ class ImageLabeler:
     def load_image(self):
         self.imageName = self.images[self.current_image_index]
         self.imageNameParts = self.imageName.split('_')
-        if len(self.imageNameParts) != 3 or self.imageNameParts[0] != "Magpeye-Android":
+        if len(self.imageNameParts) != 3 or (self.imageNameParts[0] != "Magpeye-Android" and self.imageNameParts[0] != "Magpeye-Android-tebc"):
             print(self.imageName, "is not a valid image name.")
             exit()
-        self.imageName_large = "Magpeye-Android-Large_" + self.imageNameParts[1] + "_" + self.imageNameParts[2]
+        self.imageName_large = ("Magpeye-Android-Large_" if self.imageNameParts[0] == "Magpeye-Android" else "Magpeye-Android-Large-tebc_") + self.imageNameParts[1] + "_" + self.imageNameParts[2]
         image_path = os.path.join(self.source_folder, self.imageName)
         image_path_large = os.path.join(self.source_folder, self.imageName_large)
         self.image = np.load(image_path)
@@ -70,7 +73,7 @@ class ImageLabeler:
         self.image_label = Label(self.root, image=photo)
         self.image_label.image = photo
         self.image_label.pack()
-        self.filename1_label = Label(self.root, text=self.imageNameParts[1])
+        self.filename1_label = Label(self.root, text=self.imageNameParts[0] + " " + self.imageNameParts[1])
         self.filename1_label.pack()
         self.filename2_label = Label(self.root, text=self.imageNameParts[2])
         self.filename2_label.pack()

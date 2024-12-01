@@ -24,7 +24,7 @@ with open('NotesAndTools/MislabeledFiles.csv', 'r') as csvfile:
 '''
 
 
-folderpath = "Pictures3D/val/1/"
+folderpath = "asd/"
 
 for file in os.scandir(folderpath):
     #if file.name.endswith(".npy") and file.name.__contains__("_0.") and not file.name.__contains__("_mv_") and file.name.__contains__("0674"):
@@ -43,6 +43,8 @@ for file in os.scandir(folderpath):
         newimg1 = cv.hconcat([img[i,:,:] for i in range(5)])
         newimg2 = cv.hconcat([img[i+5,:,:] for i in range(5)])
         newimg = cv.vconcat([newimg1, newimg2])
+
+        newimg = newimg[:, :, [3, 2, 1, 0]]
         
         #newimg = cv.hconcat([img[0,:,:], img[1,:,:], img[2,:,:], img[3,:,:], img[4,:,:]])
         

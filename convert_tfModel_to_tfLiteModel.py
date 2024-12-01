@@ -6,6 +6,7 @@ import tensorflow as tf
 def load_and_convert_model(model_path):
     print("Loading model...")
     model = load_model(model_path)
+    model.summary()
 
     print("Saving model...")
     converter = tf.lite.TFLiteConverter.from_keras_model(model=model)
@@ -18,7 +19,6 @@ def load_and_convert_model(model_path):
 
 
 def main():
-    print("test")
     parser = argparse.ArgumentParser(description='Load and convert Keras model to TensorFlow Lite')
     parser.add_argument('--modelPath', type=str, help='Path to the Keras model directory')
 
