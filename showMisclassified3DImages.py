@@ -24,7 +24,7 @@ with open('NotesAndTools/MislabeledFiles.csv', 'r') as csvfile:
 '''
 
 
-folderpath = "asd/"
+folderpath = "TempViewFolder/"
 
 for file in os.scandir(folderpath):
     #if file.name.endswith(".npy") and file.name.__contains__("_0.") and not file.name.__contains__("_mv_") and file.name.__contains__("0674"):

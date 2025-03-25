@@ -124,3 +124,6 @@ for i, trainingExample in enumerate(trainingExamples):
 
     if i % 1000 == 0:
         print(i)
+
+
+

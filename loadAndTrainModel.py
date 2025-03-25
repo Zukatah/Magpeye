@@ -8,6 +8,7 @@ import consumingSetsOfFiles_listFiles
 import csv
 import tensorflow as tf
 import argparse
+import logging
 # import sklearn.model_selection # TODO: check use of this method
 
 
@@ -21,6 +22,24 @@ model = None
 learningRate = 0.001
 epochsCount = 10
 
+'''
+# Logging konfigurieren
+logging.basicConfig(
+    filename='training_log.txt',
+    level=logging.INFO,
+    format='%(asctime)s - %(message)s'
+)
+class CustomCallback(tf.keras.callbacks.Callback):
+    def on_epoch_end(self, epoch, logs=None):
+        # Logs in die Datei schreiben
+        logging.info(
+            f"Epoch {epoch + 1}: "
+            f"Loss = {logs['loss']:.4f}, "
+            f"Accuracy = {logs['acc']:.4f}, "
+            f"Validation Loss = {logs.get('val_loss', 'N/A'):.4f}, "
+            f"Validation Accuracy = {logs.get('val_acc', 'N/A'):.4f}"
+        )
+'''
 
 def loadAndCompileModel():
     print("Loading model...")
@@ -33,7 +52,7 @@ def loadAndCompileModel():
 
 def trainModel():
     print("Fitting model...")
-    model_checkpoint_callback = ModelCheckpoint('./Models/tmp/cp_{val_loss:.4f}_' + modelName, save_best_only=True, save_weights_only=False, monitor='val_loss', mode='min')
+    model_checkpoint_callback = ModelCheckpoint('./Models/tmp/cp_{val_loss:.4f}_' + modelName + '.keras', save_best_only=True, save_weights_only=False, monitor='val_loss', mode='min')
     history = model.fit(train_ds, epochs=epochsCount, validation_data=val_ds, callbacks=[model_checkpoint_callback])
     print("Saving model...")
     model.save(modelPath)

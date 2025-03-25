@@ -3,7 +3,7 @@ from keras.models import Model
 from keras.layers import Input, Dense, Conv3D, MaxPooling3D, BatchNormalizationV2, Flatten, Dropout, ZeroPadding3D
 from globalConstants import TRAINING_EXAMPLE_DEPTH, TRAINING_EXAMPLE_HEIGHT, TRAINING_EXAMPLE_WIDTH
 
-modelPath = "Models/model_10x240x135_5CCM_DR1_3"
+modelPath = "Models/model_10x240x135_3CCCM_8Units_HighRes_Nr1"
 
 
 print("Creating model...")
@@ -11,51 +11,43 @@ input_layer = Input(shape=(TRAINING_EXAMPLE_DEPTH,TRAINING_EXAMPLE_HEIGHT,TRAINI
 
 
 ZeroPadding3D_1a = ZeroPadding3D(padding=(0,1,1))(input_layer)
-Conv3D_1a = Conv3D(2, (2,3,3), strides=(1,1,1), activation="relu", padding="valid")(ZeroPadding3D_1a)
+Conv3D_1a = Conv3D(8, (2,3,3), strides=(1,1,1), activation="relu", padding="valid")(ZeroPadding3D_1a)
 BaNo_1a = BatchNormalizationV2()(Conv3D_1a)
 ZeroPadding3D_1b = ZeroPadding3D(padding=(0,1,1))(BaNo_1a)
-Conv3D_1b = Conv3D(2, (2,3,3), strides=(1,1,1), activation="relu", padding="valid")(ZeroPadding3D_1b)
+Conv3D_1b = Conv3D(8, (2,3,3), strides=(1,1,1), activation="relu", padding="valid")(ZeroPadding3D_1b)
 BaNo_1b = BatchNormalizationV2()(Conv3D_1b)
-ZeroPadding3D_1c = ZeroPadding3D(padding=((0,0),(0,0),(0,1)))(BaNo_1b)
-MaxPool3D_1 = MaxPooling3D(pool_size=(1,2,2), strides=(1,2,2), padding="valid")(ZeroPadding3D_1c)
+ZeroPadding3D_1c = ZeroPadding3D(padding=(0,1,1))(BaNo_1b)
+Conv3D_1c = Conv3D(8, (2,3,3), strides=(1,1,1), activation="relu", padding="valid")(ZeroPadding3D_1c)
+BaNo_1c = BatchNormalizationV2()(Conv3D_1c)
+ZeroPadding3D_1d = ZeroPadding3D(padding=((0,0),(0,0),(0,1)))(BaNo_1c)
+MaxPool3D_1 = MaxPooling3D(pool_size=(1,2,2), strides=(1,2,2), padding="valid")(ZeroPadding3D_1d)
 
 ZeroPadding3D_2a = ZeroPadding3D(padding=(0,1,1))(MaxPool3D_1)
-Conv3D_2a = Conv3D(4, (2,3,3), strides=(1,1,1), activation="relu", padding="valid")(ZeroPadding3D_2a)
+Conv3D_2a = Conv3D(8, (2,3,3), strides=(1,1,1), activation="relu", padding="valid")(ZeroPadding3D_2a)
 BaNo_2a = BatchNormalizationV2()(Conv3D_2a)
 ZeroPadding3D_2b = ZeroPadding3D(padding=(0,1,1))(BaNo_2a)
-Conv3D_2b = Conv3D(4, (2,3,3), strides=(1,1,1), activation="relu", padding="valid")(ZeroPadding3D_2b)
+Conv3D_2b = Conv3D(8, (2,3,3), strides=(1,1,1), activation="relu", padding="valid")(ZeroPadding3D_2b)
 BaNo_2b = BatchNormalizationV2()(Conv3D_2b)
-MaxPool3D_2 = MaxPooling3D(pool_size=(1,2,2), strides=(1,2,2), padding="valid")(BaNo_2b)
+ZeroPadding3D_2c = ZeroPadding3D(padding=(0,1,1))(BaNo_2b)
+Conv3D_2c = Conv3D(8, (2,3,3), strides=(1,1,1), activation="relu", padding="valid")(ZeroPadding3D_2c)
+BaNo_2c = BatchNormalizationV2()(Conv3D_2c)
+MaxPool3D_2 = MaxPooling3D(pool_size=(1,4,4), strides=(1,4,4), padding="valid")(BaNo_2c)
 
-ZeroPadding3D_3a = ZeroPadding3D(padding=(0,1,1))(MaxPool3D_2)
-Conv3D_3a = Conv3D(6, (2,3,3), strides=(1,1,1), activation="relu", padding="valid")(ZeroPadding3D_3a)
+ZeroPadding3D_3a = ZeroPadding3D(padding=((0,0),(0,0),(0,1)))(MaxPool3D_2)
+Conv3D_3a = Conv3D(8, (2,3,3), strides=(1,1,1), activation="relu", padding="valid")(ZeroPadding3D_3a)
 BaNo_3a = BatchNormalizationV2()(Conv3D_3a)
-ZeroPadding3D_3b = ZeroPadding3D(padding=(0,1,1))(BaNo_3a)
-Conv3D_3b = Conv3D(6, (2,3,3), strides=(1,1,1), activation="relu", padding="valid")(ZeroPadding3D_3b)
+Conv3D_3b = Conv3D(8, (2,3,3), strides=(1,1,1), activation="relu", padding="valid")(BaNo_3a)
 BaNo_3b = BatchNormalizationV2()(Conv3D_3b)
-MaxPool3D_3 = MaxPooling3D(pool_size=(1,2,2), strides=(1,2,2), padding="valid")(BaNo_3b)
+Conv3D_3c = Conv3D(8, (2,3,3), strides=(1,1,1), activation="relu", padding="valid")(BaNo_3b)
+BaNo_3c = BatchNormalizationV2()(Conv3D_3c)
+MaxPool3D_3 = MaxPooling3D(pool_size=(1,4,4), strides=(1,4,4), padding="valid")(BaNo_3c)
 
-ZeroPadding3D_4a = ZeroPadding3D(padding=(0,1,1))(MaxPool3D_3)
-Conv3D_4a = Conv3D(8, (2,3,3), strides=(1,1,1), activation="relu", padding="valid")(ZeroPadding3D_4a)
-BaNo_4a = BatchNormalizationV2()(Conv3D_4a)
-ZeroPadding3D_4b = ZeroPadding3D(padding=(0,1,1))(BaNo_4a)
-Conv3D_4b = Conv3D(8, (2,3,3), strides=(1,1,1), activation="relu", padding="valid")(ZeroPadding3D_4b)
-BaNo_4b = BatchNormalizationV2()(Conv3D_4b)
-ZeroPadding3D_4c = ZeroPadding3D(padding=((0,0),(0,0),(0,1)))(BaNo_4b)
-MaxPool3D_4 = MaxPooling3D(pool_size=(1,2,2), strides=(1,2,2), padding="valid")(ZeroPadding3D_4c)
-
-ZeroPadding3D_5a = ZeroPadding3D(padding=(0,1,1))(MaxPool3D_4)
-Conv3D_5a = Conv3D(10, (2,3,3), strides=(1,1,1), activation="relu", padding="valid")(ZeroPadding3D_5a)
-BaNo_5a = BatchNormalizationV2()(Conv3D_5a)
-ZeroPadding3D_5b = ZeroPadding3D(padding=(0,1,1))(BaNo_5a)
-Conv3D_5b = Conv3D(10, (1,3,3), strides=(1,1,1), activation="relu", padding="valid")(ZeroPadding3D_5b)
-BaNo_5b = BatchNormalizationV2()(Conv3D_5b)
-MaxPool3D_5 = MaxPooling3D(pool_size=(1,3,3), strides=(1,3,3), padding="valid")(BaNo_5b)
-
-Flatten_1 = Flatten()(MaxPool3D_5)
-Dense_1 = Dense(units=56, activation="relu")(Flatten_1)
-Dropout_1 = Dropout(0.5)(Dense_1)
+Flatten_1 = Flatten()(MaxPool3D_3)
+Dense_1 = Dense(units=32, activation="relu")(Flatten_1)
+Dropout_1 = Dropout(0.4)(Dense_1)
 output_layer = Dense(units=4, activation="softmax")(Dropout_1)
+
+
 
 
 
