@@ -1,0 +1,18 @@
+# Ignoriere alle Dateien außer csv, ps1, py und txt
+*
+
+!*.csv
+
+!*.ps1
+
+!*.py
+
+!*.txt
+
+!*.md
+
+!*.sh
+
+!*.gitignore
+
+!*.gitattributes

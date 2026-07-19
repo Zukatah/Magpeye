@@ -126,9 +126,20 @@ python loadAndTrainModel.py --modelPath "model_10x240x135_zp011_6c233111_bn_zp01
 python loadAndTrainModel.py --modelPath "model_10x240x135_zp011_6c233111_bn_zp011_6c233111_bn_zp011_6c233111_bn_mp143143_8c233111_bn_8c233111_bn_8c233111_bn_mp133133_10c232111_bn_10c232111_bn_10c232111_bn_mp122122_fl_den48_do40" --learningRate 0.001 --epochs 7
 #>
 
+<#
+python loadAndTrainModel.py --modelPath "model_10x240x135_4CCM_1CM_10Units_Nr1" --learningRate 0.001 --epochs 4
+python loadAndTrainModel.py --modelPath "model_10x240x135_4CCM_1CM_10Units_Nr2" --learningRate 0.001 --epochs 4
+python loadAndTrainModel.py --modelPath "model_10x240x135_4CCM_1CM_10Units_Nr3" --learningRate 0.001 --epochs 4
+python loadAndTrainModel.py --modelPath "model_10x240x135_4CCM_1CM_10Units_Nr4" --learningRate 0.001 --epochs 4
+python loadAndTrainModel.py --modelPath "model_10x240x135_4CCM_1CM_10Units_Nr5" --learningRate 0.001 --epochs 4
+python loadAndTrainModel.py --modelPath "model_10x240x135_4CCM_1CM_10Units_Nr6" --learningRate 0.001 --epochs 4
+#>
 
 
-python loadAndTrainModel.py --modelPath "model_10x240x135_4CCM_1CM_6Units_Nr1" --learningRate 0.001 --epochs 3
+python loadAndTrainModel.py --modelPath "model_10x240x135_4CCM_1CM_6Units_Nr1" --learningRate 0.001 --epochs 4
+python loadAndTrainModel.py --modelPath "model_10x240x135_4CCM_1CM_6Units_Nr2" --learningRate 0.001 --epochs 4
+python loadAndTrainModel.py --modelPath "model_10x240x135_4CCM_1CM_6Units_Nr3" --learningRate 0.001 --epochs 4
 
+python loadAndTrainModel.py --modelPath "model_10x240x135_4CCM_1CM_8Units_Nr1" --learningRate 0.001 --epochs 5
+python loadAndTrainModel.py --modelPath "model_10x240x135_4CCM_1CM_8Units_Nr4" --learningRate 0.001 --epochs 5
 
-<# beicht@NochEinRechner PW beicht #>

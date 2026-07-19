@@ -4,8 +4,8 @@ import numpy as np
 from globalConstants import TRAINING_EXAMPLE_C0_GENERATION_LIST, TRAINING_EXAMPLE_C1C2C3_GENERATION_LIST
 
 
-'''
-trainExClass = 3
+
+trainExClass = 1
 trainExClassMv = 1 if trainExClass == 3 else 3
 folderpath_source = "Pictures3D_Input/" + str(trainExClass) + "/"
 folderpath_source_mv = "Pictures3D_Input/" + str(trainExClassMv) + "/"
@@ -45,7 +45,7 @@ for i, trainingExample in enumerate(trainingExamples):
 
     #if i > 8:
     #    break
-'''
+
 
 '''
 folderpath_source = "Pictures3D_Input/2/"
@@ -81,7 +81,7 @@ for i, trainingExample in enumerate(trainingExamples):
 '''
 
 
-
+'''
 folderpath_source = "Pictures3D_Input/0/"
 folderpath_dest_train = "Pictures3D/train/0/"
 folderpath_dest_val = "Pictures3D/val/0/"
@@ -124,6 +124,6 @@ for i, trainingExample in enumerate(trainingExamples):
 
     if i % 1000 == 0:
         print(i)
-
+'''
 
 
